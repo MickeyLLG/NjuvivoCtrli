@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>教师页面</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+    <!-- Custom Theme files -->
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- Custom Theme files -->
+    <script src="js/jquery.min.js"></script>
+    <!-- cookies -->
+
+
+
+
+</head>
+<style type="text/css">
+    body, html {
+        font-family: 'Roboto', sans-serif;
+        color: rgba(0, 0, 0, 0.8);
+    }
+    section h1 {
+        text-align: center;
+        border-bottom: 1px solid #fff;
+    }
+
+</style>
+<body>
+
+<!-- header-section-starts -->
+<div class="header" id="header">
+    <div class="container">
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt="" /></a>
+        </div>
+        <div class="social-icons header-social-icons">
+
+
+        </div>
+        <div id = "user_div">
+            <a href="login.html" class = "user_text">登录</a>
+            <a href="register.html" id = "register_text" class = "user_text">注册</a>
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="header-bottom">
+    <div class="container">
+        <h3>让<span>课堂</span>变得更加轻松与智能。</h3>
+    </div>
+</div>
+
+ <div class = "input-file">
+        <form action="" method="get" enctype="multipart/form-data">
+            <input type="text" id="avatval" placeholder="未选择文件" readonly="readonly" />
+            <input type="file" name="avatar" id="avatar"/>
+            <a href="javascript:void(0);" class="button-selectimg" id="avatsel1">选择文件</a>
+            <input  id="submit_file" type="submit" value="上传" />
+        </form>
+</div>
+
+<style type="text/css">
+    a[class="button-selectimg"]{color:#00A2D4;padding:4px 6px;border:1px dashed #00A2D4;border-radius:2px;}
+    .input-file{margin:75px 75px;}
+    input[id="avatval"]{padding:3px 6px;padding-left:10px;border:1px solid #E7EAEC;width:230px;height:25px;line-height:25px;border-left:3px solid #3FB7EB;background:#FAFAFB;border-radius:2px;}
+    input[type='file']{border:0px;display:none;}
+    input[id="submit_file"]{color:#00A2D4;padding:4px 6px;border:1px dashed #00A2D4;border-radius:2px;}
+
+</style>
+ <script type="text/javascript">
+    $(function(){
+        $("#avatsel1").click(function(){
+            $("input[type='file']").trigger('click');
+        });
+        $("#avatval").click(function(){
+            $("input[type='file']").trigger('click');
+        });
+        $("input[type='file']").change(function(){
+            $("#avatval").val($(this).val());
+        });
+    });
+</script>
+
+
+</body>
+</html>
