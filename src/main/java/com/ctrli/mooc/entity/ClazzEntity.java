@@ -10,19 +10,20 @@ import java.util.Objects;
 @Entity
 @Table(name = "class", schema = "nju_vivo", catalog = "")
 public class ClazzEntity {
-    private String cid;
+    private Integer cid;
     private String tid;
     private Date time;
     private String title;
     private String filename;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cid")
-    public String getCid() {
+    public Integer getCid() {
         return cid;
     }
 
-    public void setCid(String cid) {
+    public void setCid(Integer cid) {
         this.cid = cid;
     }
 

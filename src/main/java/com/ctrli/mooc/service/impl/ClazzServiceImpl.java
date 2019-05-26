@@ -1,0 +1,75 @@
+package com.ctrli.mooc.service.impl;
+
+import com.ctrli.mooc.GlobalConfig;
+import com.ctrli.mooc.dao.ClazzDao;
+import com.ctrli.mooc.dto.Envelope;
+import com.ctrli.mooc.entity.ClazzEntity;
+import com.ctrli.mooc.service.ClazzService;
+import com.ctrli.mooc.util.FileUtil;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
+import java.io.File;
+import java.sql.Date;
+
+/**
+ * Create by zekdot on 19-5-26.
+ */
+@Service
+public class ClazzServiceImpl implements ClazzService {
+    @Resource
+    private ClazzDao clazzDao;
+    @Override
+    public Envelope startNewService(String title, String tId, MultipartFile file) {
+        // 检查主题输入合法性
+        if(title == null){
+            return new Envelope(1,"主题不能为空",null);
+        }
+        if(title.length() > 20){
+            return new Envelope(2,"主题过长",null);
+        }
+        // 检查文件是否为空
+        if(file == null){
+            return new Envelope(3,"文件不可为空！",null);
+        }
+        // 在数据库中新增加一个记录，并获取主键
+        ClazzEntity clazzEntity = new ClazzEntity();
+        // 设置主题
+        clazzEntity.setTitle(title);
+        // 设置教师id
+        clazzEntity.setTid(tId);
+        // 设置时间
+        clazzEntity.setTime(new Date(new java.util.Date().getTime()));
+        // 保存课程信息
+        try {
+            // 保存班级实体
+            clazzDao.save(clazzEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelope.dbError;
+        }
+        // 主键作为文件名在/home/zekdot/njuvivo下新建文件夹，将PPT文件输入到文件夹中
+        // 构建文件夹名称
+        String folderName = new StringBuilder().append(GlobalConfig.PPT_FOLDER).append(clazzEntity.getCid()).toString();
+        // 构建文件夹对象
+        File folder = new File(folderName);
+        // 创建文件夹
+        if(!folder.mkdir()){
+            // 如果失败，返回原因
+            return new Envelope(-3,"文件夹创建错误",null);
+        }
+        // 存储PPT
+        if (FileUtil.saveFile(file, "slider.pptx",folderName)) {
+            //成功存储文件
+            ;
+        } else {
+            // 存储文件失败
+            return new Envelope(-4, "文件存储失败", null);
+        }
+        // TODO 将文件夹中的PPT转换为图片，并且存储在文件夹中
+
+        // TODO 更新数据库中id对应的主键字段
+        return null;
+    }
+}
