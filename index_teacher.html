@@ -51,43 +51,73 @@
     </div>
 </div>
 
- <div class = "input-file">
-        <form action="" method="get" enctype="multipart/form-data">
-    <p><input type="text" id = "ppt_title" placeholder="课件题目"/></p>
+<div class="choose_type">
+    <div class="left_area">
+        <div class = "input-file">
+            <p>上传新的课件并开始上课</p>
+                    <form action="" method="get" enctype="multipart/form-data">
+            <p><input type="text" id = "ppt_title" placeholder="课件题目"/></p>
 
-            <p><input type="text" id="avatval" placeholder="未选择文件" readonly="readonly" />
+                        <p><input type="text" id="avatval" placeholder="未选择文件" readonly="readonly" />
 
-            <input type="file" name="avatar" id="avatar"/>
+                        <input type="file" name="avatar" id="avatar"/>
 
-            <a href="javascript:void(0);" class="button-selectimg" id="avatsel1">选择文件</a></p>
+                        <a href="javascript:void(0);" class="button-selectimg" id="avatsel1">选择文件</a></p>
 
-    <p><button onclick="check()" value="上传" id="submit">上传</button></p>
+            <p><button onclick="check()" value="上传" id="submit">上传</button></p>
 
-        </form>
+                    </form>
+        </div>
+
+        <style type="text/css">
+            a[class="button-selectimg"]{color:#00A2D4;padding:4px 6px;border:1px dashed #00A2D4;border-radius:2px;}
+            .input-file{margin:20px 150px;float: left;}
+            input[id="avatval"]{padding:3px 6px;padding-left:10px;border:1px solid #E7EAEC;width:230px;height:25px;line-height:25px;border-left:3px solid #3FB7EB;background:#FAFAFB;border-radius:2px;}
+            input[id="ppt_title"]{padding:3px 6px;padding-left:10px;border:1px solid #E7EAEC;width:230px;height:25px;line-height:25px;border-left:3px solid #3FB7EB;background:#FAFAFB;border-radius:2px;}
+            input[type='file']{border:0px;display:none;}
+            button[id="submit"]{margin:20px 0px ;color:#00A2D4;padding: 4px 6px ;border:1px dashed #00A2D4;border-radius:2px;}
+
+        </style>
+         <script type="text/javascript">
+        $(function(){
+            $("#avatsel1").click(function(){
+                $("input[type='file']").trigger('click');
+            });
+            $("#avatval").click(function(){
+                $("input[type='file']").trigger('click');
+            });
+            $("input[type='file']").change(function(){
+                $("#avatval").val($(this).val());
+            });
+        });
+    </script>
+    </div>
+    <div class="right_area">
+        <div class = "new_class">
+            <p>新的课程</p>
+                    <form action="" method="get" enctype="multipart/form-data">
+            <p>选择上课使用的课件</p>
+            <p><select>
+                <option value ="volvo">Volvo</option>
+                <option value ="saab">Saab</option>
+                <option value="opel">Opel</option>
+                <option value="audi">Audi</option>
+            </select></p>
+            <p><button onclick="check()" value="start_new_class" id="start_new_class">开始上课</button></p>
+
+                    </form>
+
+
+            <style type="text/css">
+                .new_class{margin:20px 150px;float: left}
+                select{margin:10px 0px;padding:3px 6px;padding-left:10px;border:1px solid #E7EAEC;width:230px;height:25px;line-height:25px;border-left:3px solid #3FB7EB;background:#FAFAFB;border-radius:2px;}
+                button[id="start_new_class"]{margin:0px 0px ;color:#00A2D4;padding: 4px 6px ;border:1px dashed #00A2D4;border-radius:2px;}
+
+            </style>
+        </div>
+    </div>
 </div>
-
-<style type="text/css">
-    a[class="button-selectimg"]{color:#00A2D4;padding:4px 6px;border:1px dashed #00A2D4;border-radius:2px;}
-    .input-file{margin:20px 150px;}
-    input[id="avatval"]{padding:3px 6px;padding-left:10px;border:1px solid #E7EAEC;width:230px;height:25px;line-height:25px;border-left:3px solid #3FB7EB;background:#FAFAFB;border-radius:2px;}
-    input[id="ppt_title"]{padding:3px 6px;padding-left:10px;border:1px solid #E7EAEC;width:230px;height:25px;line-height:25px;border-left:3px solid #3FB7EB;background:#FAFAFB;border-radius:2px;}
-    input[type='file']{border:0px;display:none;}
-    button[id="submit"]{margin:20px 0px ;color:#00A2D4;padding: 4px 6px ;border:1px dashed #00A2D4;border-radius:2px;}
-
-</style>
- <script type="text/javascript">
-    $(function(){
-        $("#avatsel1").click(function(){
-            $("input[type='file']").trigger('click');
-        });
-        $("#avatval").click(function(){
-            $("input[type='file']").trigger('click');
-        });
-        $("input[type='file']").change(function(){
-            $("#avatval").val($(this).val());
-        });
-    });
-</script>
+ 
 
 
 </body>
