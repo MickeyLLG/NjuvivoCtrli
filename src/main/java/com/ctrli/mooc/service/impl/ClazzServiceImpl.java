@@ -7,6 +7,7 @@ import com.ctrli.mooc.entity.ClazzEntity;
 import com.ctrli.mooc.service.ClazzService;
 import com.ctrli.mooc.util.FileUtil;
 import com.ctrli.mooc.util.PPTToPicUtil;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.File;
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Create by zekdot on 19-5-26.
@@ -43,8 +45,8 @@ public class ClazzServiceImpl implements ClazzService {
         clazzEntity.setTid(tId);
         // 设置时间
         clazzEntity.setTime(new Date(new java.util.Date().getTime()));
-        // 设置当前页数为1
-        clazzEntity.setCurPage(1);
+        // 设置当前页数为0 表示还没开始上课
+        clazzEntity.setCurPage(0);
         // 保存课程信息
         try {
             // 保存班级实体
@@ -138,8 +140,34 @@ public class ClazzServiceImpl implements ClazzService {
             e.printStackTrace();
             return Envelope.dbError;
         }
+        // 如果课程不存在
         if(clazzEntity == null){
+            // 返回失败信息
             return new Envelope(1,"该课程不存在",null);
+        }
+        // 返回当前的页面
+        return new Envelope(clazzEntity.getCurPage());
+    }
+
+    @Override
+    public Envelope getHisPPTByTid(String tid) {
+        List<ClazzEntity> list = null;
+        try {
+            // 根据教师id获取所有课程
+            list = clazzDao.getClazzListBytid(tid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // 保存主题、文件路径列表
+        JSONArray jsonArray = new JSONArray();
+        // 保存某一个主题、文件
+        JSONObject jsonObject;
+        // 遍历每一个课程
+        for(ClazzEntity clazzEntity:list){
+            jsonObject = new JSONObject();
+            jsonObject.put("cid",clazzEntity.getCid());
+            jsonObject.put("title",clazzEntity.getTitle());
+            jsonArray.add(jsonObject);
         }
         return null;
     }

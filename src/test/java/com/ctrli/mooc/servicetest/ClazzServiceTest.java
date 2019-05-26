@@ -31,6 +31,17 @@ public class ClazzServiceTest extends TmallApplicationTests {
         JSONObject jsonObject = JSONObject.fromObject(envelope.getObj());
         Assert.assertEquals(jsonObject.getInt("pageNum"),45);
         Assert.assertEquals(jsonObject.getInt("cid"),6);
+    }
 
+    @Test
+    public void testUpdatePage(){
+        Assert.assertEquals(clazzService.updatePPTPage(7,"456",10).getCode(),1);
+        Assert.assertEquals(clazzService.updatePPTPage(6,"545",10).getCode(),2);
+        Assert.assertEquals(clazzService.updatePPTPage(6,"123",10).getCode(),0);
+    }
+    @Test
+    public void testGetPage(){
+        Assert.assertEquals(clazzService.getPPTPage(7).getCode(),1);
+        Assert.assertEquals(clazzService.getPPTPage(6).getObj(),10);
     }
 }

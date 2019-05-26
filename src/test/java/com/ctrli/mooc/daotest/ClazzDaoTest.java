@@ -40,4 +40,13 @@ public class ClazzDaoTest extends TmallApplicationTests {
         }
 
     }
+
+    @Test
+    public void testGetListById(){
+        try {
+            Assert.assertEquals(clazzDao.getClazzListBytid("123").size(),4);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

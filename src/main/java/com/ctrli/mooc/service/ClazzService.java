@@ -32,5 +32,11 @@ public interface ClazzService {
      */
     public Envelope getPPTPage(int cid);
 
+    /**
+     * 根据教师id获取历史上传的PPT-主题列表
+     * @param tid 教师id
+     * @return 列表信息
+     */
+    public Envelope getHisPPTByTid(String tid);
 
 }
