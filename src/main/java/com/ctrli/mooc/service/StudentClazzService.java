@@ -17,5 +17,5 @@ public interface StudentClazzService {
      * @param cid
      * @return
      */
-    public Envelope clazzOff(String sid,String cid);
+    public Envelope updateAnalysis(String sid, String cid);
 }
