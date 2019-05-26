@@ -94,20 +94,53 @@ public class ClazzServiceImpl implements ClazzService {
     }
 
     @Override
-    public Envelope updatePPTPage(int cid, int tid, int newPageNum) {
-        //
+    public Envelope updatePPTPage(int cid, String tid, int newPageNum) {
+        // 新建班级实体
         ClazzEntity clazzEntity;
         try {
+            // 读取数据库中的班级实体
             clazzEntity = clazzDao.get(cid);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelope.dbError;
+        }
+        // 如果课程不存在
+        if(clazzEntity == null){
+            // 返回失败信息
+            return new Envelope(1,"该课程不存在",null);
+        }
+        // 如果非本人
+        if(!clazzEntity.getTid().equals(tid)){
+            // 返回失败信息
+            return new Envelope(2,"您不能翻动别人的PPT",null);
+        }
+        // 设置新的页码
+        clazzEntity.setCurPage(newPageNum);
 
+        // 更新数据库
+        try {
+            clazzDao.update(clazzEntity);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        // 返回成功信息
+        return new Envelope(newPageNum);
     }
 
     @Override
-    public Envelope getPPTPage(int cid, int sid) {
+    public Envelope getPPTPage(int cid) {
+        // 新建班级实体
+        ClazzEntity clazzEntity;
+        try {
+            // 读取数据库中的班级实体
+            clazzEntity = clazzDao.get(cid);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelope.dbError;
+        }
+        if(clazzEntity == null){
+            return new Envelope(1,"该课程不存在",null);
+        }
         return null;
     }
 

@@ -23,15 +23,14 @@ public interface ClazzService {
      * @param newPageNum 新的页码
      * @return 是否成功
      */
-    public Envelope updatePPTPage(int cid,int tid,int newPageNum);
+    public Envelope updatePPTPage(int cid,String tid,int newPageNum);
 
     /**
      * 获取当前的PPT的页数
      * @param cid 课程id
-     * @param sid 学生id
      * @return 当前页码
      */
-    public Envelope getPPTPage(int cid,int sid);
+    public Envelope getPPTPage(int cid);
 
 
 }

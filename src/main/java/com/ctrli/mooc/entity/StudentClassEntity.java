@@ -11,17 +11,17 @@ import java.util.Objects;
 @Table(name = "student_class", schema = "nju_vivo", catalog = "")
 @IdClass(StudentClassEntityPK.class)
 public class StudentClassEntity {
-    private String cid;
+    private int cid;
     private String sid;
     private Date time;
 
     @Id
     @Column(name = "cid")
-    public String getCid() {
+    public int getCid() {
         return cid;
     }
 
-    public void setCid(String cid) {
+    public void setCid(int cid) {
         this.cid = cid;
     }
 
@@ -45,13 +45,12 @@ public class StudentClassEntity {
         this.time = time;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StudentClassEntity that = (StudentClassEntity) o;
-        return Objects.equals(cid, that.cid) &&
+        return cid == that.cid &&
                 Objects.equals(sid, that.sid) &&
                 Objects.equals(time, that.time);
     }

@@ -9,16 +9,16 @@ import java.util.Objects;
  * Create by zekdot on 19-5-26.
  */
 public class StudentClassEntityPK implements Serializable {
-    private String cid;
+    private int cid;
     private String sid;
 
     @Column(name = "cid")
     @Id
-    public String getCid() {
+    public int getCid() {
         return cid;
     }
 
-    public void setCid(String cid) {
+    public void setCid(int cid) {
         this.cid = cid;
     }
 
@@ -37,7 +37,7 @@ public class StudentClassEntityPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StudentClassEntityPK that = (StudentClassEntityPK) o;
-        return Objects.equals(cid, that.cid) &&
+        return cid == that.cid &&
                 Objects.equals(sid, that.sid);
     }
 
