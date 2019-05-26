@@ -55,7 +55,7 @@ public class ClazzServiceImpl implements ClazzService {
         }
         // 主键作为文件名在/home/zekdot/njuvivo下新建文件夹，将PPT文件输入到文件夹中
         // 构建文件夹名称
-        String folderName = new StringBuilder().append(GlobalConfig.PPT_FOLDER).append(clazzEntity.getCid()).toString();
+        String folderName = new StringBuilder().append(GlobalConfig.PPT_FOLDER).append(clazzEntity.getCid()).append("/").toString();
         // 构建文件夹对象
         File folder = new File(folderName);
         // 创建文件夹
