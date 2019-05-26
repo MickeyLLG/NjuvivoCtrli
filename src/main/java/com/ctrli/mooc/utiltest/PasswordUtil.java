@@ -1,4 +1,4 @@
-package com.ctrli.mooc.util;
+package com.ctrli.mooc.utiltest;
 
 import org.springframework.util.DigestUtils;
 

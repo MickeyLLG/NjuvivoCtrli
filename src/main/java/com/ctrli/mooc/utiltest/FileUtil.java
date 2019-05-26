@@ -1,4 +1,4 @@
-package com.ctrli.mooc.util;
+package com.ctrli.mooc.utiltest;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -7,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
-import java.nio.file.Files;
 
 /**
  * 文件处理小工具

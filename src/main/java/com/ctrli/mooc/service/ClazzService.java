@@ -39,4 +39,19 @@ public interface ClazzService {
      */
     public Envelope getHisPPTByTid(String tid);
 
+    /**
+     * 根据历史课程id开启一个新课程
+     * @param cid 历史课程id
+     * @param tid 教师id
+     * @return 新课程id
+     */
+    public Envelope startByHisCid(int cid,String tid);
+
+    /**
+     * 根据课程id获取总页数
+     * @param cid 课程id
+     * @return 总页数
+     */
+    public Envelope getPageNum(int cid);
+
 }

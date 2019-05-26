@@ -1,4 +1,4 @@
-package com.ctrli.mooc.util;
+package com.ctrli.mooc.utiltest;
 
 /**
  * 普通格式与web文字格式替换

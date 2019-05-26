@@ -3,10 +3,9 @@ package com.ctrli.mooc.daotest;
 import com.ctrli.mooc.TmallApplicationTests;
 import com.ctrli.mooc.dao.StudentDao;
 import com.ctrli.mooc.entity.StudentEntity;
-import com.ctrli.mooc.util.PasswordUtil;
+import com.ctrli.mooc.utiltest.PasswordUtil;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 

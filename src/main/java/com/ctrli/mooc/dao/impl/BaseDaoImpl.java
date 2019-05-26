@@ -151,5 +151,18 @@ public abstract class BaseDaoImpl<K extends Serializable,T> implements BaseDao<K
         }
 
     }
+    public void saveAndFlush(T object) {
+        Session session = HibernateUtil.getSession();
+        try {
+            Transaction transaction = session.beginTransaction();
+            session.save(object);
+            session.flush();
+            transaction.commit();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            HibernateUtil.closeSession();
+        }
 
+    }
 }

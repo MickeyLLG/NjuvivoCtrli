@@ -3,7 +3,8 @@ package com.ctrli.mooc.servicetest;
 import com.ctrli.mooc.TmallApplicationTests;
 import com.ctrli.mooc.dto.Envelope;
 import com.ctrli.mooc.service.ClazzService;
-import com.ctrli.mooc.util.FileUtil;
+import com.ctrli.mooc.utiltest.FileUtil;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,7 +31,8 @@ public class ClazzServiceTest extends TmallApplicationTests {
         Assert.assertEquals(envelope.getCode(),0);
         JSONObject jsonObject = JSONObject.fromObject(envelope.getObj());
         Assert.assertEquals(jsonObject.getInt("pageNum"),45);
-        Assert.assertEquals(jsonObject.getInt("cid"),6);
+        //Assert.assertEquals(jsonObject.getInt("cid"),6);
+        System.out.println(jsonObject.toString());
     }
 
     @Test
@@ -43,5 +45,23 @@ public class ClazzServiceTest extends TmallApplicationTests {
     public void testGetPage(){
         Assert.assertEquals(clazzService.getPPTPage(7).getCode(),1);
         Assert.assertEquals(clazzService.getPPTPage(6).getObj(),10);
+    }
+
+    @Test
+    public void testGetPageList(){
+        JSONArray jsonArray = JSONArray.fromObject(clazzService.getHisPPTByTid("444").getObj());
+
+        Assert.assertEquals(jsonArray.size(),0);
+        jsonArray = JSONArray.fromObject(clazzService.getHisPPTByTid("123").getObj());
+        System.out.println(jsonArray);
+        Assert.assertEquals(jsonArray.size(),5);
+    }
+
+    @Test
+    public void testStartByHisCid(){
+        Assert.assertEquals(1,clazzService.startByHisCid(100,"test").getCode());
+        Assert.assertEquals(2,clazzService.startByHisCid(7,"test").getCode());
+        Assert.assertEquals(0,clazzService.startByHisCid(7,"123").getCode());
+        System.out.println(clazzService.startByHisCid(7,"123"));
     }
 }

@@ -29,7 +29,7 @@ public class AnalysisServiceImplTest extends TmallApplicationTests {
     }
     @Test
     public void pageAnalysisTest(){
-        Envelope e=analysisService.getPageAnalysis(1,3,2);
+        Envelope e=analysisService.getPageAnalysis(1,3);
         System.out.println(e.getObj().toString());
     }
 }

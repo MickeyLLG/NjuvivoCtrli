@@ -22,7 +22,7 @@ public class AnalysisServiceImpl implements AnalysisService {
         analysisEntity.setCurPage(curPage);
         analysisEntity.setData(data);
         try {
-            analysisDao.save(analysisEntity);
+            analysisDao.saveOrUpdate(analysisEntity);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelope.dbError;
@@ -31,7 +31,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     }
 
     @Override
-    public Envelope getPageAnalysis(int cid, int curPage,double threshold) {
+    public Envelope getPageAnalysis(int cid, int curPage) {
         List<AnalysisEntity> analysisEntityList;
         int total,happyCount=0,sadCount=0;
         try {
@@ -44,7 +44,7 @@ public class AnalysisServiceImpl implements AnalysisService {
         for (AnalysisEntity analysisEntity:analysisEntityList){
             JSONObject data=JSONObject.fromObject(analysisEntity.getData());
             double score=data.getDouble("score");
-            happyCount+=score>=threshold?1:0;
+            happyCount+=score>=0?1:0;
         }
         sadCount=total-happyCount;
         JSONObject result=new JSONObject();

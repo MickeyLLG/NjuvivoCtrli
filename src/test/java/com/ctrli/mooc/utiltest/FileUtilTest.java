@@ -1,12 +1,8 @@
-package com.ctrli.mooc.util;
+package com.ctrli.mooc.utiltest;
 
 import com.ctrli.mooc.TmallApplicationTests;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Create by zekdot on 19-5-26.

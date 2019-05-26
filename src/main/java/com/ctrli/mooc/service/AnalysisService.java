@@ -5,10 +5,10 @@ import com.ctrli.mooc.dto.Envelope;
 public interface AnalysisService {
     /**
      *
-     * @param sid
-     * @param cid
-     * @param curPage
-     * @param data
+     * @param sid 学生id
+     * @param cid 课程id
+     * @param curPage 当前页码
+     * @param data 数据
      * @return
      */
     public Envelope updateAnalysis(String sid, int cid, int curPage, String data);
@@ -19,5 +19,5 @@ public interface AnalysisService {
      * @param curPage
      * @return
      */
-    public Envelope getPageAnalysis(int cid,int curPage,double threshold);
+    public Envelope getPageAnalysis(int cid,int curPage);
 }

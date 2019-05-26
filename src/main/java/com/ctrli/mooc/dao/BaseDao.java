@@ -37,4 +37,11 @@ public interface BaseDao<K extends Serializable,T> {
      * @throws Exception
      */
     public void saveOrUpdate(T object) throws Exception;
+
+    /**
+     * 存储并更新
+     * @param object
+     * @throws Exception
+     */
+    public void saveAndFlush(T object) throws Exception;
 }

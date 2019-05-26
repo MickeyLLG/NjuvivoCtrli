@@ -10,22 +10,22 @@ import java.util.Objects;
 @Entity
 @Table(name = "class", schema = "nju_vivo", catalog = "")
 public class ClazzEntity {
-    private Integer cid;
+    private int cid;
     private String tid;
     private Date time;
     private String title;
     private String dirname;
     private int curPage;
-
+    private int pageNum;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "cid")
-    public Integer getCid() {
+    public int getCid() {
         return cid;
     }
 
-    public void setCid(Integer cid) {
+    public void setCid(int cid) {
         this.cid = cid;
     }
 
@@ -59,24 +59,6 @@ public class ClazzEntity {
         this.title = title;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ClazzEntity that = (ClazzEntity) o;
-        return Objects.equals(cid, that.cid) &&
-                Objects.equals(tid, that.tid) &&
-                Objects.equals(time, that.time) &&
-                Objects.equals(title, that.title) &&
-                Objects.equals(dirname,that.dirname) &&
-                Objects.equals(curPage,that.curPage);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(cid, tid, time, title,dirname,curPage);
-    }
-
     @Basic
     @Column(name = "dirname")
     public String getDirname() {
@@ -95,5 +77,34 @@ public class ClazzEntity {
 
     public void setCurPage(int curPage) {
         this.curPage = curPage;
+    }
+
+    @Basic
+    @Column(name = "page_num")
+    public int getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(int pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ClazzEntity that = (ClazzEntity) o;
+        return cid == that.cid &&
+                curPage == that.curPage &&
+                Objects.equals(tid, that.tid) &&
+                Objects.equals(time, that.time) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(dirname, that.dirname) &&
+                Objects.equals(pageNum, that.pageNum);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cid, tid, time, title, dirname, curPage, pageNum);
     }
 }
