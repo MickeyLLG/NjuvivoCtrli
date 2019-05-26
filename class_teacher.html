@@ -37,6 +37,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
+    <!--绘制图表-->
+    <script src="https://cdn.bootcss.com/Chart.js/2.7.3/Chart.js"></script>
+
+
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <!--webfont-->
     <script type="text/javascript">
@@ -125,7 +129,7 @@
         right: 0px;
         height: 75px;
         border: 0;
-        border-left: 1px solid rgb(23, 32, 43, 0.2);
+        border-left: 1px solid rgb(23, 32, 43);
         background: #323131;
         color: #fff;
         cursor: pointer;
@@ -183,7 +187,7 @@
         border-bottom: 1px solid #fff;
     }
 
-    }
+
 </style>
 <body>
 
@@ -198,7 +202,35 @@
             <h3 ><font color="white">数据统计</font></h3>
         </li>
         <li><font color="white">总体情绪比例： </font></li>
-        <li><hr/> </li>
+
+            <canvas id="myChart" width="800" height="600"></canvas>
+            <script type="text/javascript">
+                var ctx1 = document.getElementById('myChart');
+                var internetType = []; //上网类型
+                var onePercentage = [];  //所占百分比
+                var backColor1 = []	//百分比颜色
+
+                internetType.push(1);
+                internetType.push(2);
+                onePercentage.push(0.2);
+                onePercentage.push(0.8);
+                backColor1.push('#FF6384','#36A2EB');
+
+                var myChart1 = new Chart(ctx1,{
+                    type:'pie',
+                    data:{
+                        labels: internetType, //矩形标题
+                        datasets:[{
+                            data: onePercentage, //所占整圆的比例
+                            backgroundColor:backColor1, //背景色
+                            hoverBackgroundColor:backColor1
+                        }]
+                    }
+                });
+
+
+            </script>
+
         <li><font color="white">当前页情绪比例： </font> </li>
 
 
