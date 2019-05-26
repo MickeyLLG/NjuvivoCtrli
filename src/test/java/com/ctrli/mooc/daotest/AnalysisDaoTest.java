@@ -8,6 +8,7 @@ import com.ctrli.mooc.entity.AnalysisEntityPK;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 public class AnalysisDaoTest extends TmallApplicationTests {
     @Resource
@@ -22,5 +23,16 @@ public class AnalysisDaoTest extends TmallApplicationTests {
         analysisEntity.setCurPage(1);
         analysisEntity.setSid("s1");
         //analysisEntity.setCid();
+    }
+
+    @Test
+    public void countTest(){
+        try {
+            List<AnalysisEntity> l=analysisDao.countStudentPerPage(1,3);
+            for (AnalysisEntity o:l)
+                System.out.println(o.getData());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

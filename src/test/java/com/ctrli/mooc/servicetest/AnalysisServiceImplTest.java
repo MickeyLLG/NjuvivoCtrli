@@ -1,6 +1,7 @@
 package com.ctrli.mooc.servicetest;
 
 import com.ctrli.mooc.TmallApplicationTests;
+import com.ctrli.mooc.dto.Envelope;
 import com.ctrli.mooc.service.AnalysisService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,5 +26,10 @@ public class AnalysisServiceImplTest extends TmallApplicationTests {
                 "}";
         int code=analysisService.updateAnalysis("s1",1,3,data).getCode();
         Assert.assertEquals(0,code);
+    }
+    @Test
+    public void pageAnalysisTest(){
+        Envelope e=analysisService.getPageAnalysis(1,3,2);
+        System.out.println(e.getObj().toString());
     }
 }
