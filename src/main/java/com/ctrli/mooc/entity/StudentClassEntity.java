@@ -14,7 +14,6 @@ public class StudentClassEntity {
     private String cid;
     private String sid;
     private Date time;
-    private String analysis;
 
     @Id
     @Column(name = "cid")
@@ -46,15 +45,6 @@ public class StudentClassEntity {
         this.time = time;
     }
 
-    @Basic
-    @Column(name = "analysis")
-    public String getAnalysis() {
-        return analysis;
-    }
-
-    public void setAnalysis(String analysis) {
-        this.analysis = analysis;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -63,12 +53,11 @@ public class StudentClassEntity {
         StudentClassEntity that = (StudentClassEntity) o;
         return Objects.equals(cid, that.cid) &&
                 Objects.equals(sid, that.sid) &&
-                Objects.equals(time, that.time) &&
-                Objects.equals(analysis, that.analysis);
+                Objects.equals(time, that.time);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cid, sid, time, analysis);
+        return Objects.hash(cid, sid, time);
     }
 }

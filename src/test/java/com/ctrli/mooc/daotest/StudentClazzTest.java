@@ -21,7 +21,7 @@ public class StudentClazzTest extends TmallApplicationTests {
         studentClassEntity.setSid("s1");
         studentClassEntity.setCid("c1");
         studentClassEntity.setTime(date);
-        studentClassEntity.setAnalysis("kldlhm");
+        //studentClassEntity.setAnalysis("kldlhm");
         try {
             studentClazzDao.save(studentClassEntity);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class StudentClazzTest extends TmallApplicationTests {
         scpk.setSid("c1");
         try {
             StudentClassEntity sce=studentClazzDao.get(scpk);
-            Assert.assertEquals("kldlhm",sce.getAnalysis());
+            //Assert.assertEquals("kldlhm",sce.getAnalysis());
         } catch (Exception e) {
             e.printStackTrace();
         }
