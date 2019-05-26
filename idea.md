@@ -20,11 +20,18 @@
   * time 发布时间
   * title PPT主题
   * filename 文件名
+
 * 学生-开课
   * c_id
   * t_id
   * time 加入时间
-  * analysis 分析JSON
+
+* 分析
+
+  * c_id 课程id
+  * s_id 学生id
+  * cur_page 当前页码
+  * data 数据
 
 - [x] 教师登录 
 
@@ -33,7 +40,7 @@
 - [ ] 上传PPT
 
 - [x] PPT转换
-- [ ] 教师当前第几页，获取课堂暗号
+- [ ] 教师开课获取课堂暗号
 - [ ] 学生加入，收到PPT画面
 - [ ] 教师翻页，学生画面改变
 - [ ] 学生看，记录数据
@@ -55,3 +62,22 @@
 ​	输暗号
 
 ​	操作页面
+
+
+
+
+
+
+'curPage':4,
+data:{
+
+​	score:"",​	
+
+    anger：愤怒——14.67%
+    disgust：厌恶——0.163%
+    fear：恐惧——0.163%
+    happiness：高兴——1.936%
+    neutral：平静——68.429%
+    sadness：伤心——14.67%
+    surprise：惊讶——11.633%	
+}

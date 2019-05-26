@@ -39,5 +39,6 @@
         <mapping class="com.ctrli.mooc.entity.StudentClassEntity"/>
         <mapping class="com.ctrli.mooc.entity.TeacherEntity"/>
         <mapping class="com.ctrli.mooc.entity.TestEntity"/>
+        <mapping class="com.ctrli.mooc.entity.AnalysisEntity"/>
     </session-factory>
 </hibernate-configuration>

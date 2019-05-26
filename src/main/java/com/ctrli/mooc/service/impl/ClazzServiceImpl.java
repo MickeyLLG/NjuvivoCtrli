@@ -92,4 +92,16 @@ public class ClazzServiceImpl implements ClazzService {
         // 返回成功后的信息
         return new Envelope(jsonObject);
     }
+
+    @Override
+    public Envelope updatePPTPage(int cid, int tid, int newPageNum) {
+        return null;
+    }
+
+    @Override
+    public Envelope getPPTPage(int cid, int sid) {
+        return null;
+    }
+
+
 }

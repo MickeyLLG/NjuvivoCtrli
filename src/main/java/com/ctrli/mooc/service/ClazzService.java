@@ -16,5 +16,22 @@ public interface ClazzService {
      */
     public Envelope startNewService(String title, String tId, MultipartFile file);
 
+    /**
+     * 修改当前的PPT页数
+     * @param cid 课程id
+     * @param tid 教师id
+     * @param newPageNum 新的页码
+     * @return 是否成功
+     */
+    public Envelope updatePPTPage(int cid,int tid,int newPageNum);
+
+    /**
+     * 获取当前的PPT的页数
+     * @param cid 课程id
+     * @param sid 学生id
+     * @return 当前页码
+     */
+    public Envelope getPPTPage(int cid,int sid);
+
 
 }
