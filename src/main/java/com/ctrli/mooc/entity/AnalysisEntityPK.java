@@ -1,22 +1,20 @@
 package com.ctrli.mooc.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Create by zekdot on 19-5-26.
  */
-@Entity
-@Table(name = "analysis", schema = "nju_vivo", catalog = "")
-@IdClass(AnalysisEntityPK.class)
-public class AnalysisEntity {
+public class AnalysisEntityPK implements Serializable {
     private int cid;
     private String sid;
     private int curPage;
-    private String data;
 
-    @Id
     @Column(name = "cid")
+    @Id
     public int getCid() {
         return cid;
     }
@@ -25,8 +23,8 @@ public class AnalysisEntity {
         this.cid = cid;
     }
 
-    @Id
     @Column(name = "sid")
+    @Id
     public String getSid() {
         return sid;
     }
@@ -35,8 +33,8 @@ public class AnalysisEntity {
         this.sid = sid;
     }
 
-    @Id
     @Column(name = "cur_page")
+    @Id
     public int getCurPage() {
         return curPage;
     }
@@ -45,29 +43,18 @@ public class AnalysisEntity {
         this.curPage = curPage;
     }
 
-    @Basic
-    @Column(name = "data")
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AnalysisEntity that = (AnalysisEntity) o;
+        AnalysisEntityPK that = (AnalysisEntityPK) o;
         return cid == that.cid &&
                 curPage == that.curPage &&
-                Objects.equals(sid, that.sid) &&
-                Objects.equals(data, that.data);
+                Objects.equals(sid, that.sid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cid, sid, curPage, data);
+        return Objects.hash(cid, sid, curPage);
     }
 }

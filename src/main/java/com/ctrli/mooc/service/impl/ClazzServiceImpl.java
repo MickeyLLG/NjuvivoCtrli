@@ -95,6 +95,14 @@ public class ClazzServiceImpl implements ClazzService {
 
     @Override
     public Envelope updatePPTPage(int cid, int tid, int newPageNum) {
+        //
+        ClazzEntity clazzEntity;
+        try {
+            clazzEntity = clazzDao.get(cid);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
