@@ -19,7 +19,7 @@ public class StudentClazzTest extends TmallApplicationTests {
         java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
         StudentClassEntity studentClassEntity=new StudentClassEntity();
         studentClassEntity.setSid("s1");
-        studentClassEntity.setCid("c1");
+        studentClassEntity.setCid(1);
         studentClassEntity.setTime(date);
         //studentClassEntity.setAnalysis("kldlhm");
         try {
@@ -32,8 +32,8 @@ public class StudentClazzTest extends TmallApplicationTests {
     @Test
     public void getTest(){
         StudentClassEntityPK scpk=new StudentClassEntityPK();
-        scpk.setCid("s1");
-        scpk.setSid("c1");
+        scpk.setCid(1);
+        scpk.setSid("s1");
         try {
             StudentClassEntity sce=studentClazzDao.get(scpk);
             //Assert.assertEquals("kldlhm",sce.getAnalysis());

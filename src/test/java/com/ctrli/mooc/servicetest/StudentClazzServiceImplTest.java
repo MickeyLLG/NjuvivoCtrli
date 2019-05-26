@@ -18,13 +18,13 @@ public class StudentClazzServiceImplTest extends TmallApplicationTests {
     public void studentGetIntoClazzTest() {
         int code;
 
-        code=studentClazzService.studentGetIntoClazz("","c2").getCode();
+        code=studentClazzService.studentGetIntoClazz("",1).getCode();
         Assert.assertEquals(1,code);
-        code=studentClazzService.studentGetIntoClazz("s2",null).getCode();
+        code=studentClazzService.studentGetIntoClazz("s2",-1).getCode();
         Assert.assertEquals(2,code);
-        code=studentClazzService.studentGetIntoClazz("s1","c2").getCode();
-        Assert.assertEquals(3,code);
-        code=studentClazzService.studentGetIntoClazz("s2","c2").getCode();
+        code=studentClazzService.studentGetIntoClazz("s1",1).getCode();
+        Assert.assertEquals(0,code);
+        code=studentClazzService.studentGetIntoClazz("s1",1).getCode();
         Assert.assertEquals(3,code);
 
     }

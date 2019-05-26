@@ -9,13 +9,7 @@ public interface StudentClazzService {
      * @param cid
      * @return
      */
-    public Envelope studentGetIntoClazz(String sid,String cid);
+    public Envelope studentGetIntoClazz(String sid,int cid);
 
-    /**
-     *
-     * @param sid
-     * @param cid
-     * @return
-     */
-    public Envelope updateAnalysis(String sid, String cid);
+
 }
