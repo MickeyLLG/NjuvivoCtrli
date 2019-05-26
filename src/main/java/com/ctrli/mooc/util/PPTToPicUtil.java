@@ -31,12 +31,14 @@ public class PPTToPicUtil {
             is.close();
             // 获取大小
             Dimension pgsize = xmlSlideShow.getPageSize();
+            List<XSLFSlide> slides;
             // 获取幻灯片
-            XSLFSlide[] slides = xmlSlideShow.getSlides();
-            imgCount = slides.length;
-            for (int i = 0 ; i < slides.length ; i++) {
+            slides = xmlSlideShow.getSlides();
+            imgCount = slides.size();
+            for (int i = 0 ; i < slides.size() ; i++) {
+                List<XSLFShape> shapes;
                 // 解决乱码问题
-                XSLFShape[] shapes = slides[i].getShapes();
+                shapes = slides.get(i).getShapes();
                 for (XSLFShape shape : shapes) {
                     if (shape instanceof XSLFTextShape) {
                         XSLFTextShape sh = (XSLFTextShape) shape;
@@ -55,7 +57,7 @@ public class PPTToPicUtil {
                 graphics.setPaint(Color.white);
                 graphics.fill(new Rectangle2D.Float(0, 0, pgsize.width,pgsize.height));
                 // 最核心的代码
-                slides[i].draw(graphics);
+                slides.get(i).draw(graphics);
                 //图片将要存放的路径
                 String absolutePath = imgFile.getAbsolutePath()+"/"+ (i + 1) + ".jpg";
                 File jpegFile = new File(absolutePath);
@@ -83,8 +85,8 @@ public class PPTToPicUtil {
         return imgCount;
     }
     public static void main(String[] args) {
-        File ppt = new File("C:\\慧学.pptx");
-        File img = new File("C:\\2\\");
+        File ppt = new File("/home/zekdot/moocres/test1.pptx");
+        File img = new File("/home/zekdot/moocres");
         List<String> list = new ArrayList<String>();
         System.out.println(doPPT2007toImage(ppt,img,list));
     }
