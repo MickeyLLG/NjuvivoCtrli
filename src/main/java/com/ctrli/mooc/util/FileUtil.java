@@ -1,7 +1,8 @@
 package com.ctrli.mooc.util;
 
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -75,29 +76,67 @@ public class FileUtil {
         }
         return null;
     }
+    public static MultipartFile getFile(String filename) {
+        FileItem fileItem = createFileItem(filename);
+        MultipartFile mfile = new CommonsMultipartFile(fileItem);
+        return mfile;
+    }
 
-    /**
-     *
-     * @Description 返回MultipartFile文件
-     * @param filename 文件名
-     * @return 转换的file
-     */
-    public static MultipartFile getFile(String filename) throws IOException {
-        File file = new File(filename);
-        FileItem fileItem = new DiskFileItem(file.getName(), Files.probeContentType(file.toPath()),false,file.getName(),(int)file.length(),file.getParentFile());
-        byte[] buffer = new byte[4096];
-        int n;
-        try (InputStream inputStream = new FileInputStream(file); OutputStream os = fileItem.getOutputStream()){
-            while ( (n = inputStream.read(buffer,0,4096)) != -1){
-                os.write(buffer,0,n);
+    private static FileItem createFileItem(String filePath)
+    {
+        FileItemFactory factory = new DiskFileItemFactory(16, null);
+        String textFieldName = "textField";
+        int num = filePath.lastIndexOf(".");
+        String extFile = filePath.substring(num);
+        org.apache.commons.fileupload.FileItem item = factory.createItem(textFieldName, "text/plain", true,
+                "MyFileName" + extFile);
+        File newfile = new File(filePath);
+        int bytesRead = 0;
+        byte[] buffer = new byte[8192];
+        try
+        {
+            FileInputStream fis = new FileInputStream(newfile);
+            OutputStream os = item.getOutputStream();
+            while ((bytesRead = fis.read(buffer, 0, 8192))
+                    != -1)
+            {
+                os.write(buffer, 0, bytesRead);
             }
-            //也可以用IOUtils.copy(inputStream,os);
-            MultipartFile multipartFile = new CommonsMultipartFile((org.apache.commons.fileupload.FileItem) fileItem);
-            System.out.println(multipartFile.getName());
-            return multipartFile;
-        }catch (IOException e){
+            os.close();
+            fis.close();
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
-        return null;
+        return item;
+    }
+
+//    public static MultipartFile getFile(String filename) throws IOException {
+//        File file = new File(filename);
+//        FileItem fileItem = new DiskFileItem(file.getName(), Files.probeContentType(file.toPath()),false,file.getName(),(int)file.length(),file.getParentFile());
+//        byte[] buffer = new byte[4096];
+//        int n;
+//        try (InputStream inputStream = new FileInputStream(file); OutputStream os = fileItem.getOutputStream()){
+//            while ( (n = inputStream.read(buffer,0,4096)) != -1){
+//                os.write(buffer,0,n);
+//            }
+//            //也可以用IOUtils.copy(inputStream,os);
+//            MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
+//            System.out.println(multipartFile.getName());
+//            return multipartFile;
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
+    public static void main(String args[]){
+        MultipartFile mf = FileUtil.getFile("/home/zekdot/桌面/区块链/第五章 区块链架构 - 2 以太坊.pptx");
+        try {
+            System.out.println(mf.getBytes().length);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        FileUtil.saveFile(mf,"test.pptx","/home/zekdot/桌面/区块链/");
     }
 }

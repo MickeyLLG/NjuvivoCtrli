@@ -13,7 +13,6 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.logging.Log;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFShape;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
@@ -22,7 +21,24 @@ import org.apache.poi.xslf.usermodel.XSLFTextRun;
 import org.apache.poi.xslf.usermodel.XSLFTextShape;
 
 public class PPTToPicUtil {
-    public static int doPPT2007toImage(File pptFile,File imgFile,List<String> list) {
+
+
+    /**
+     * 根据PPT名称和存放路径来转换图片
+     * @param pptFilename PPT文件名
+     * @param toPath 存放路径
+     * @return 转换了多少张图片
+     */
+    public static int savePPTtoImage(String pptFilename,String toPath){
+        // 新建PPT对象
+        File ppt = new File(pptFilename);
+        // 新建路径对象
+        File imgPath = new File(toPath);
+        // 转换
+        return doPPT2007toImage(ppt,imgPath);
+    }
+
+    private static int doPPT2007toImage(File pptFile,File imgFile) {
         FileInputStream is = null ;
         int imgCount = 0;
         try {
@@ -62,7 +78,7 @@ public class PPTToPicUtil {
                 String absolutePath = imgFile.getAbsolutePath()+"/"+ (i + 1) + ".jpg";
                 File jpegFile = new File(absolutePath);
                 // 图片路径存放
-                list.add((i + 1) + ".jpg");
+                //list.add((i + 1) + ".jpg");
                 //如果图片存在，则不再生成
                 if (jpegFile.exists()) {
                     continue;
@@ -73,22 +89,20 @@ public class PPTToPicUtil {
                 ImageIO.write(img, "jpeg", out);
                 out.close();
             }
-            System.out.print("PPT转换成图片 成功！");
+            //System.out.print("PPT转换成图片 成功！");
             //log.error("PPT转换成图片 成功！");
             return imgCount;
         }
         catch (Exception e) {
             e.printStackTrace();
-            System.out.print("PPT转换成图片 发生异常！");
+            //System.out.print("PPT转换成图片 发生异常！");
             // log.error("PPT转换成图片 发生异常！", e);
         }
         return imgCount;
     }
     public static void main(String[] args) {
-        File ppt = new File("/home/zekdot/moocres/test1.pptx");
-        File img = new File("/home/zekdot/moocres");
+        PPTToPicUtil.savePPTtoImage("/home/zekdot/moocres/test1.pptx","/home/zekdot/moocres");
         List<String> list = new ArrayList<String>();
-        System.out.println(doPPT2007toImage(ppt,img,list));
     }
 
 }

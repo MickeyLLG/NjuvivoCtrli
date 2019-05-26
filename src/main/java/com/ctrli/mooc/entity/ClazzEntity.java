@@ -14,7 +14,9 @@ public class ClazzEntity {
     private String tid;
     private Date time;
     private String title;
-    private String filename;
+    private String dirname;
+    private int curPage;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,16 +59,6 @@ public class ClazzEntity {
         this.title = title;
     }
 
-    @Basic
-    @Column(name = "filename")
-    public String getFilename() {
-        return filename;
-    }
-
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,11 +68,32 @@ public class ClazzEntity {
                 Objects.equals(tid, that.tid) &&
                 Objects.equals(time, that.time) &&
                 Objects.equals(title, that.title) &&
-                Objects.equals(filename, that.filename);
+                Objects.equals(dirname,that.dirname) &&
+                Objects.equals(curPage,that.curPage);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cid, tid, time, title, filename);
+        return Objects.hash(cid, tid, time, title,dirname,curPage);
+    }
+
+    @Basic
+    @Column(name = "dirname")
+    public String getDirname() {
+        return dirname;
+    }
+
+    public void setDirname(String dirname) {
+        this.dirname = dirname;
+    }
+
+    @Basic
+    @Column(name = "cur_page")
+    public int getCurPage() {
+        return curPage;
+    }
+
+    public void setCurPage(int curPage) {
+        this.curPage = curPage;
     }
 }

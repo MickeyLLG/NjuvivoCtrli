@@ -6,6 +6,8 @@ import com.ctrli.mooc.dto.Envelope;
 import com.ctrli.mooc.entity.ClazzEntity;
 import com.ctrli.mooc.service.ClazzService;
 import com.ctrli.mooc.util.FileUtil;
+import com.ctrli.mooc.util.PPTToPicUtil;
+import net.sf.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,6 +43,8 @@ public class ClazzServiceImpl implements ClazzService {
         clazzEntity.setTid(tId);
         // 设置时间
         clazzEntity.setTime(new Date(new java.util.Date().getTime()));
+        // 设置当前页数为1
+        clazzEntity.setCurPage(1);
         // 保存课程信息
         try {
             // 保存班级实体
@@ -67,9 +71,25 @@ public class ClazzServiceImpl implements ClazzService {
             // 存储文件失败
             return new Envelope(-4, "文件存储失败", null);
         }
-        // TODO 将文件夹中的PPT转换为图片，并且存储在文件夹中
-
-        // TODO 更新数据库中id对应的主键字段
-        return null;
+        // 将文件夹中的PPT转换为图片，并且存储在文件夹中，同时获取PPT页数
+        int pptNum = PPTToPicUtil.savePPTtoImage(folderName+"slider.pptx",folderName);
+        // 更新数据库中id对应的主键字段
+        // 设置字段
+        clazzEntity.setDirname(folderName);
+        // 更新
+        try {
+            clazzDao.update(clazzEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelope.dbError;
+        }
+        // 用于返回的对象
+        JSONObject jsonObject = new JSONObject();
+        // 设置页码
+        jsonObject.put("pageNum",pptNum);
+        // 设置课程暗号
+        jsonObject.put("cid",clazzEntity.getCid());
+        // 返回成功后的信息
+        return new Envelope(jsonObject);
     }
 }

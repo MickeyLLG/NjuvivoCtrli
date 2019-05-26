@@ -19,10 +19,11 @@ public class ClazzDaoTest extends TmallApplicationTests {
     @Test
     public void testInsert(){
         ClazzEntity clazzEntity = new ClazzEntity();
-        clazzEntity.setFilename("null");
+        clazzEntity.setDirname("null");
         clazzEntity.setTid("123456");
         clazzEntity.setTime(new java.sql.Date(new Date().getTime()));
         clazzEntity.setTitle("测试");
+        clazzEntity.setCurPage(0);
         try {
             clazzDao.save(clazzEntity);
         } catch (Exception e) {
@@ -32,8 +33,8 @@ public class ClazzDaoTest extends TmallApplicationTests {
     @Test
     public void testGet(){
         try {
-            ClazzEntity clazzEntity = clazzDao.get(1);
-            Assert.assertEquals("null",clazzEntity.getFilename());
+            ClazzEntity clazzEntity = clazzDao.get(2);
+            Assert.assertEquals("null",clazzEntity.getDirname());
         } catch (Exception e) {
             e.printStackTrace();
         }
