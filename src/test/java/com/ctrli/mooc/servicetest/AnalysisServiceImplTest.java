@@ -31,5 +31,18 @@ public class AnalysisServiceImplTest extends TmallApplicationTests {
     public void pageAnalysisTest(){
         Envelope e=analysisService.getPageAnalysis(1,3);
         System.out.println(e.getObj().toString());
+        e=analysisService.getPageAnalysis(24,3);
+        System.out.println(e.getObj());
+        Assert.assertEquals(1,e.getCode());
+
+    }
+    @Test
+    public void clazzAnalysisTest(){
+        Envelope e=analysisService.getClazzAnalysis(1);
+        System.out.println(e.getObj().toString());
+        e=analysisService.getClazzAnalysis(24);
+        System.out.println(e.getObj());
+        Assert.assertEquals(1,e.getCode());
+
     }
 }

@@ -48,10 +48,10 @@ public interface ClazzService {
     public Envelope startByHisCid(int cid,String tid);
 
     /**
-     * 根据课程id获取总页数
+     * 根据课程id获取pageNum,dirname
      * @param cid 课程id
      * @return 总页数
      */
-    public Envelope getPageNum(int cid);
+    public Envelope getPageInfo(int cid);
 
 }

@@ -1,6 +1,7 @@
 package com.ctrli.mooc.service;
 
 import com.ctrli.mooc.dto.Envelope;
+import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 
 public interface AnalysisService {
     /**
@@ -20,4 +21,11 @@ public interface AnalysisService {
      * @return
      */
     public Envelope getPageAnalysis(int cid,int curPage);
+
+    /**
+     * \
+     * @param cid
+     * @return
+     */
+    public Envelope getClazzAnalysis(int cid);
 }

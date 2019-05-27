@@ -238,7 +238,7 @@ public class ClazzController {
     @ResponseBody
     public String getPageNumByCid(int cid){
         try{
-            return clazzService.getPageNum(cid).toString();
+            return clazzService.getPageInfo(cid).toString();
         }catch (Exception e){
             e.printStackTrace();
             return Envelope.systemError.toString();

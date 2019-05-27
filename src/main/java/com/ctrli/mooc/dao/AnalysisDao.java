@@ -11,8 +11,14 @@ public interface AnalysisDao extends BaseDao<AnalysisEntityPK, AnalysisEntity>{
      *
      * @param cid
      * @param curPage
-     * @param minScore
      * @return
      */
-    public List<AnalysisEntity> countStudentPerPage(int cid, int curPage) throws Exception;
+    public List<AnalysisEntity> getStudentPerPage(int cid, int curPage) throws Exception;
+
+    /**
+     *
+     * @param cid
+     * @return
+     */
+    public List<AnalysisEntity> getStudentPerClazz(int cid) throws Exception;
 }

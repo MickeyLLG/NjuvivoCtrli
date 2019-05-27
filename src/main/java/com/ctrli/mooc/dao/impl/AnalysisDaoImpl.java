@@ -13,10 +13,17 @@ import java.util.List;
 @Repository
 public class AnalysisDaoImpl extends BaseDaoImpl<AnalysisEntityPK, AnalysisEntity> implements AnalysisDao {
     @Override
-    public List<AnalysisEntity> countStudentPerPage(int cid, int curPage) throws Exception {
+    public List<AnalysisEntity> getStudentPerPage(int cid, int curPage) throws Exception {
         String hql="from AnalysisEntity where cid=? and curPage=?";
         Object[] params={cid,curPage};
 
+        return executeHQL(hql,params);
+    }
+
+    @Override
+    public List<AnalysisEntity> getStudentPerClazz(int cid) throws Exception {
+        String hql="from AnalysisEntity where cid=?";
+        Object[] params={cid};
         return executeHQL(hql,params);
     }
 }

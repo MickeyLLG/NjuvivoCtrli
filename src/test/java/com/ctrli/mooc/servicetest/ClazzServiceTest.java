@@ -64,4 +64,10 @@ public class ClazzServiceTest extends TmallApplicationTests {
         Assert.assertEquals(0,clazzService.startByHisCid(7,"123").getCode());
         System.out.println(clazzService.startByHisCid(7,"123"));
     }
+
+    @Test
+    public void getPageInfoTest(){
+        System.out.println(clazzService.getPageInfo(6));
+        Assert.assertEquals(1,clazzService.getPageInfo(66).getCode());
+    }
 }

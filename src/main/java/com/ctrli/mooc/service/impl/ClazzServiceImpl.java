@@ -239,7 +239,7 @@ public class ClazzServiceImpl implements ClazzService {
     }
 
     @Override
-    public Envelope getPageNum(int cid) {
+    public Envelope getPageInfo(int cid) {
         ClazzEntity clazzEntity;
         try {
             clazzEntity = clazzDao.get(cid);
@@ -250,8 +250,11 @@ public class ClazzServiceImpl implements ClazzService {
         if(clazzEntity == null){
             return new Envelope(1,"没有找到该课程",null);
         }
-        // 返回页数
-        return new Envelope(clazzEntity.getPageNum());
+        // 返回pageNum,dirname
+        JSONObject result=new JSONObject();
+        result.put("pageNum",clazzEntity.getPageNum());
+        result.put("dirname",clazzEntity.getDirname());
+        return new Envelope(0,"success",result);
     }
 
 

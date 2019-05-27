@@ -2,7 +2,6 @@ package com.ctrli.mooc.daotest;
 
 import com.ctrli.mooc.TmallApplicationTests;
 import com.ctrli.mooc.dao.AnalysisDao;
-import com.ctrli.mooc.dao.ClazzDao;
 import com.ctrli.mooc.entity.AnalysisEntity;
 import com.ctrli.mooc.entity.AnalysisEntityPK;
 import org.junit.Test;
@@ -28,7 +27,7 @@ public class AnalysisDaoTest extends TmallApplicationTests {
     @Test
     public void countTest(){
         try {
-            List<AnalysisEntity> l=analysisDao.countStudentPerPage(1,3);
+            List<AnalysisEntity> l=analysisDao.getStudentPerPage(1,3);
             for (AnalysisEntity o:l)
                 System.out.println(o.getData());
         } catch (Exception e) {

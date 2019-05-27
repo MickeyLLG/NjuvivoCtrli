@@ -1,6 +1,7 @@
 package com.ctrli.mooc.service.impl;
 
 import com.ctrli.mooc.dao.AnalysisDao;
+import com.ctrli.mooc.dao.ClazzDao;
 import com.ctrli.mooc.dto.Envelope;
 import com.ctrli.mooc.entity.AnalysisEntity;
 import com.ctrli.mooc.service.AnalysisService;
@@ -14,6 +15,8 @@ import java.util.List;
 public class AnalysisServiceImpl implements AnalysisService {
     @Resource
     private AnalysisDao analysisDao;
+    @Resource
+    private ClazzDao clazzDao;
     @Override
     public Envelope updateAnalysis(String sid, int cid,int curPage,String data) {
         AnalysisEntity analysisEntity=new AnalysisEntity();
@@ -32,16 +35,18 @@ public class AnalysisServiceImpl implements AnalysisService {
 
     @Override
     public Envelope getPageAnalysis(int cid, int curPage) {
-        List<AnalysisEntity> analysisEntityList;
+        List<AnalysisEntity> studentPerPageList;
         int total,happyCount=0,sadCount=0;
         try {
-            analysisEntityList=analysisDao.countStudentPerPage(cid,curPage);
+            studentPerPageList=analysisDao.getStudentPerPage(cid,curPage);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelope.dbError;
         }
-        total=analysisEntityList.size();
-        for (AnalysisEntity analysisEntity:analysisEntityList){
+        if (studentPerPageList.size()<=0||studentPerPageList==null)
+            return new Envelope(1,"没有找到该页",null);
+        total=studentPerPageList.size();
+        for (AnalysisEntity analysisEntity:studentPerPageList){
             JSONObject data=JSONObject.fromObject(analysisEntity.getData());
             double score=data.getDouble("score");
             happyCount+=score>=0?1:0;
@@ -50,6 +55,33 @@ public class AnalysisServiceImpl implements AnalysisService {
         JSONObject result=new JSONObject();
         result.put("happyCount",happyCount);
         result.put("sadCount",sadCount);
+
+        return new Envelope(0,"success",result);
+    }
+
+    @Override
+    public Envelope getClazzAnalysis(int cid) {
+        List<AnalysisEntity> studentPerClazzList;
+        int pageNum,totalStudentNum,happyCount=0,sadCount=0;
+        try {
+            studentPerClazzList=analysisDao.getStudentPerClazz(cid);
+            pageNum=clazzDao.get(cid).getPageNum();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelope.dbError;
+        }
+        if (studentPerClazzList.size()<=0||studentPerClazzList==null)
+            return new Envelope(1,"没有找到该课程",null);
+        totalStudentNum=studentPerClazzList.size();
+        for (AnalysisEntity analysisEntity:studentPerClazzList){
+            JSONObject data=JSONObject.fromObject(analysisEntity.getData());
+            double score=data.getDouble("score");
+            happyCount+=score>=0?1:0;
+        }
+        sadCount=totalStudentNum-happyCount;
+        JSONObject result=new JSONObject();
+        result.put("happyCount",((double)happyCount)/pageNum);
+        result.put("sadCount",((double)sadCount)/pageNum);
 
         return new Envelope(0,"success",result);
     }
