@@ -10,7 +10,8 @@
     <script src="js/jquery.min.js"></script>
     <!-- cookies -->
 
-
+    <script type="text/javascript" src="js/cookiesutil.js"></script>
+<script type="text/javascript" src="js/config.js"></script>
 
 
 </head>
@@ -37,11 +38,11 @@
 
 
         </div>
-        <div id = "user_div">
+        <!-- <div id = "user_div">
             <a href="login.html" class = "user_text">登录</a>
             <a href="register.html" id = "register_text" class = "user_text">注册</a>
 
-        </div>
+        </div> -->
         <div class="clearfix"></div>
     </div>
 </div>
@@ -70,6 +71,30 @@
             $("#class_num").focus();
             return false;
         }
+        // 获取数据
+        var data = {'cid':$("#class_num").val()};
+        //alert(JSON.stringify(data));
+        //return;
+        // 设置JSESSIONID
+        document.cookie = 'JSESSIONID=' + getCookie('loginCoo');
+        $.ajax({
+            url : ip+':8092/class/studentGetIntoClazz',
+            dataType: 'json',
+            type : 'POST',
+            data:data,
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+
+            success: function(res) {
+                if(res.code != 0 && res.code != 4){
+                    alert(res.message)
+                }else{
+                    window.location.href = 'student_board.html?cid='+$("#class_num").val();
+                }
+            }
+        });
         return true;
     }
 </script>

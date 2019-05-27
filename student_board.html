@@ -14,7 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter@0.8.4"></script> -->
     <!-- cookies -->
     <script type="text/javascript" src="js/cookiesutil.js"></script>
-    <script type="text/javascript" src="js/config.js"></script>
+<script type="text/javascript" src="js/config.js"></script>
     <!-- 配置 -->
 <!--     <script type="text/javascript" src="js/config.js"></script>
     <script src="js/vendor/clmtrackr.js"></script>
@@ -23,11 +23,12 @@
     <script src="js/itrack.js"></script> -->
     <!--     <script src="js/test.js"></script> -->
 <!--     <script type="text/javascript" src="js/cursor.js"></script> -->
+    <!-- 打开摄像头 -->
+    <script type="text/javascript" src="js/facetracker.js"></script>
     <!-- 情绪识别相关API -->
-<!--     <script type="text/javascript" src="js/facepp_sdk/jquery.min.js"></script>
     <script type="text/javascript" src="js/facepp_sdk/exif.js"></script>
     <script type="text/javascript" src="js/facepp_sdk/facepp_sdk.js"></script>
-    <script type="text/javascript" src="js/emotion.js"></script> -->
+    <script type="text/javascript" src="js/emotion.js"></script>
     <!-- 手势识别相关功能 -->
 <!-- 
     <script type="text/javascript" src="js/gesture.js"></script> -->
@@ -41,12 +42,61 @@
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <!--webfont-->
     <script type="text/javascript">
+        window.cid = 0; //当前课程号
+        window.curPage = 0; //当前页数
+        window.pageNum = 0;//总页数
+        window.url = null;  //图片URL
+        // 获取当前的slider
+        function getCurSlider(){
+            // 设置请求数据
+            var data = {'cid':window.cid};
+
+            // 向后台请求数据
+            $.get(ip+':8092/class/getPageInfo',data,function(str){
+                var res = eval('(' + str + ')');
+                if(res.code != 0){
+                    alert(res.message);
+                }else{
+                    // 设置路径
+                    window.url = res.object.dirname;
+                    // 设置页面
+                    window.pageNum = res.object.pageNum;
+                    //alert(window.url)
+                }
+            });
+            //alert(JSON.stringify(data))
+            $.get(ip+':8092/class/getCurPage',data,function(str){
+                //alert(str)
+                var res = eval('(' + str + ')');
+                if(res.code != 0){
+                    alert(res.message);
+                }else{
+                    window.curPage = eval(res.object);
+                    // 如果还没有开课
+                    if(window.curPage == 0){
+                        $('#slider').attr('src','images/nosignal.jpg');
+                    }else{
+                        $('#slider').attr('src',window.url+'/'+window.curPage+'.jpg');
+                    }
+                    
+                    //alert('课程id为'+params.cid+' '+'共有'+params.pageNum+'页'+' 当前位于'+window.curPage+'页');
+                }
+            })
+        }
+
         jQuery(document).ready(function($) {
             // 获取参数
-            // var params = getParam(''+window.location);
-            // alert('课程id为'+params.cid+' '+'共有'+params.pageNum+'页');
-            //setInterval(emotionRun,5000);
- 
+            var params = getParam(''+window.location);
+            // 赋值cid
+            window.cid = params.cid;
+
+            // 获取当前的PPT
+            getCurSlider();
+            // 每5s获取一次PPT
+            setInterval(getCurSlider,5000);
+
+            setInterval(emotionRun,5000);
+            
         });
 
 
@@ -67,6 +117,7 @@
         left: 0;
         z-index:999;
         overflow-x:hidden;
+        display: none;
     }
     #eyes {
         position: fixed;
@@ -128,65 +179,16 @@
         z-index: 999;
     }
 
-    aside ul li {
-        height: 40px;
-        line-height: 40px;
-        border-top: 1px solid #fff;
-        border-bottom: 1px solid #fff;
-        list-style-type: none;
-        text-align: center;
-    }
-
-    aside ul li a {
+    #slider{
         width: 100%;
-        height: 100%;
-        text-decoration-line: none;
-        color: #fff;
-        display: block;
-    }
-
-    aside ul li a:hover {
-        background: #d3d;
-    }
-    aside ul li input {
-        display: inline;
-        width: 40px;
-        height: 20px;
-    }
-
-    section {
-        width: 100%;
-        height: 100%;
-        background: #d4d4d4;
-        height: 1000px;
-    }
-
-    section h1 {
-        text-align: center;
-        border-bottom: 1px solid #fff;
-    }
-
+        height: 80%;
     }
 </style>
 <body>
-
-<!-- 用于测试使用 -->
-<canvas id="picCan" width="400" height="300"></canvas>
+<video id="webcam" width="400" height="300" autoplay></video>
 <canvas id="gastureCan" width="400" height="300"></canvas>
 <!-- 侧边栏 -->
-<aside class="box" id="config-list">
-    <button id="open-config">三</button>
-    <ul>
-        <li>
-            <h3 ><font color="white">数据统计</font></h3>
-        </li>
-        <li><font color="white">总体情绪比例： </font></li>
-        <li><hr/> </li>
-        <li><font color="white">当前页情绪比例： </font> </li>
 
-
-    </ul>
-</aside>
 <!-- header-section-starts -->
 <div class="header" id="header">
     <div class="container">
@@ -197,7 +199,7 @@
 
 
         </div>
-       <!--  <div id = "user_div">
+        <!-- <div id = "user_div">
             <a href="login.html" class = "user_text">登录</a>
             <a href="register.html" id = "register_text" class = "user_text">注册</a>
             <!-- <p  class = "user_text">欢迎您，</p><a href="" class = "user_text">zek</a> -->
@@ -207,54 +209,9 @@
 </div>
 <div class="header-bottom">
     <div class="container">
-        <h3>让<span>课堂</span>变得更加轻松与智能。</h3>
+        <img src="images/b1.jpg" id="slider">
     </div>
 </div>
-
-<div class = "old_class">
-    <p>已有课程</p>
-           
-    <p>输入课程号码</p>
-    <input type="text" id="class_num" placeholder='请输入课程号码'  />
-    <p><button value="start_old_class" id="start_old_class">开始上课</button></p>
-
-           
-
-
-    <style type="text/css">
-        .old_class{margin:20px 150px;float: left}
-        input[id='class_num']{margin:10px 0px;padding:3px 6px;padding-left:10px;border:1px solid #E7EAEC;width:230px;height:25px;line-height:25px;border-left:3px solid #3FB7EB;background:#FAFAFB;border-radius:2px;}
-        button[id="start_old_class"]{margin:0px 0px ;color:#00A2D4;padding: 4px 6px ;border:1px dashed #00A2D4;border-radius:2px;}
-
-    </style>
-</div>
-<div>
-    <p><button onclick="location.href = 'index_teacher.html'">创建新的课程</button></p>
-</div>
-<!-- <div class="content" id="content"  >
-    <img src=""  alt="" />
-    <p><button onclick="check()" value="last_page" id="last_page">上一页</button></p>
-    <p><button onclick="check()" value="next_page" id="next_page">下一页</button></p>
-    <p><button onclick="check()" value="end_class" id="end_class">结束课程</button></p>
-
-    <style type="text/css">
-        div[id="content"]{display: none;}
-
-    </style>
-
-</div> -->
-
-
-<script type="text/javascript">
-    $('#start_old_class').click(function(){
-        if($('#class_num').val() == ""){
-            alert('课程id不可为空！');
-            return ;
-        }
-        window.location.href = 'teacher_board.html?cid='+$('#class_num').val();
-           
-    })
-</script>
 
 
 

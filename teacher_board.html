@@ -1,0 +1,608 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>授课界面</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+    <!-- Custom Theme files -->
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- Custom Theme files -->
+    <script src="js/jquery.min.js"></script>
+<!--     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.15.3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter@0.8.4"></script> -->
+    <!-- cookies -->
+    <script type="text/javascript" src="js/cookiesutil.js"></script>
+<script type="text/javascript" src="js/config.js"></script>
+    <!-- 配置 -->
+<!--     <script type="text/javascript" src="js/config.js"></script>
+    <script src="js/vendor/clmtrackr.js"></script>
+    <script src="js/globals.js"></script>
+    <script src="js/facetracker.js"></script>
+    <script src="js/itrack.js"></script> -->
+    <!--     <script src="js/test.js"></script> -->
+<!--     <script type="text/javascript" src="js/cursor.js"></script> -->
+    <!-- 情绪识别相关API -->
+<!--     <script type="text/javascript" src="js/facepp_sdk/jquery.min.js"></script>
+    <script type="text/javascript" src="js/facepp_sdk/exif.js"></script>
+    <script type="text/javascript" src="js/facepp_sdk/facepp_sdk.js"></script>
+    <script type="text/javascript" src="js/emotion.js"></script> -->
+    <!-- 手势识别相关功能 -->
+<!-- 
+    <script type="text/javascript" src="js/gesture.js"></script> -->
+    <script src="js/param.js"></script>
+
+   <!--  <script type="text/javascript" src="js/pagectrl.js"></script> -->
+    <!-- Custom Theme files -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     <!--绘制图表-->
+    <script src="https://cdn.bootcss.com/Chart.js/2.7.3/Chart.js"></script>
+
+
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!--webfont-->
+    <script type="text/javascript">
+        // 进入加载状态
+        function loading(){
+
+        }
+        window.curPage = 0; //当前页数
+        window.cid = 0; //当前课程号
+        window.pageNum = 0;//总页数
+        window.url = null;  //图片URL
+        jQuery(document).ready(function($) {
+            // 获取参数
+            var params = getParam(''+window.location);
+            // 赋值cid
+            window.cid = params.cid;
+            // 赋值总页数
+            //window.pageNum = params.pageNum;
+            // 设置请求数据
+            var data = {'cid':params.cid};
+            // 获取路径
+            
+            // 向后台请求数据
+            $.get(ip+':8092/class/getPageInfo',data,function(str){
+                var res = eval('(' + str + ')');
+                if(res.code != 0){
+                    alert(res.message);
+                }else{
+                    // 设置路径
+                    window.url = res.object.dirname;
+                    // 设置页面
+                    window.pageNum = res.object.pageNum;
+                    //alert(window.url
+                    $.get(ip+':8092/class/getCurPage',data,function(str){
+                        //alert(str)
+                        var res = eval('(' + str + ')');
+                        if(res.code != 0){
+                            alert(res.message);
+                        }else{
+                            window.curPage = eval(res.object);
+                            // 如果还没有开课
+                            if(window.curPage == 0){
+                                $('#cur_one').attr('src','images/nosignal.jpg');
+                                $('#next_one').attr('src',window.url+'/'+(window.curPage+1)+'.jpg');
+                                $('#cur_slider').attr('src','images/nosignal.jpg');
+                            }else{
+                                if(window.curPage == 1)
+                                    $('#last_one').attr('src','images/nosignal.jpg');
+                                else
+                                    $('#last_one').attr('src',window.url+'/'+(window.curPage - 1)+'.jpg');
+                                $('#cur_one').attr('src',window.url+'/'+(window.curPage)+'.jpg');
+                                $('#next_one').attr('src',window.url+'/'+(window.curPage + 1)+'.jpg');
+                                $('#cur_slider').attr('src',window.url+'/'+(window.curPage)+'.jpg');
+                            }
+                            $('#curPageInfo').text(window.curPage+'/'+window.pageNum);
+                        }
+                    })
+                }
+            });
+            //alert(JSON.stringify(data))
+            
+            // 点击上一张PPT
+            $('#last_one').click(function(){
+                // 最起码要把无信号放在上一个
+                if(window.curPage > 1){
+                    window.curPage = window.curPage - 1;
+                }else{
+                    alert('没有上一张了哦');
+                    return ;
+                }
+                document.cookie = 'JSESSIONID=' + getCookie('loginCoo');
+                // 构造数据
+                var data = {'cid':window.cid,'newPageNum':window.curPage};
+
+                $.ajax({
+                    url: ip+":8092/class/updateCurPage",
+                    dataType: 'json',
+                    type : 'POST',
+                    data:data,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    crossDomain: true,
+
+                    success: function(res) {
+                        // 如果设置失败了
+                        if(res.code != 0){
+                            alert(res.message)
+                            window.curPage += 1;    //恢复
+                        }else{
+                            // 如果已经到了第一页
+                            if(window.curPage == 1){
+                                $('#last_one').attr('src','images/nosignal.jpg');
+                                // $('#cur_one').attr('src','ppt/'+window.cid+'/1.jpg');
+                                // $('#next_one').attr('src','ppt/'+window.cid+'/2.jpg');
+                                // $('#cur_slider').attr('src','ppt/'+window.cid+'/1.jpg');
+                                $('#cur_one').attr('src',window.url+'/1.jpg');
+                                $('#next_one').attr('src',window.url+'/2.jpg');
+                                $('#cur_slider').attr('src',window.url+'/1.jpg');
+                            }else{
+                                $('#last_one').attr('src',window.url+'/'+(window.curPage - 1)+'.jpg');
+                                $('#cur_one').attr('src',window.url+'/'+(window.curPage)+'.jpg');
+                                $('#next_one').attr('src',window.url+'/'+(window.curPage + 1)+'.jpg');    
+                                $('#cur_slider').attr('src',window.url+'/'+(window.curPage)+'.jpg');
+                            }
+                            $('#curPageInfo').text(window.curPage+'/'+window.pageNum);
+                        }
+                    }
+                });
+            });
+            // 点击上一张PPT
+            $('#next_one').click(function(){
+                // 最后保证末页变成当前页数
+                if(window.curPage < window.pageNum){
+                    window.curPage = window.curPage + 1;
+                }else{
+                    alert('没有下一张了哦');
+                }
+                document.cookie = 'JSESSIONID=' + getCookie('loginCoo');
+                // 构造数据
+                var data = {'cid':window.cid,'newPageNum':window.curPage};
+
+                $.ajax({
+                    url: ip+":8092/class/updateCurPage",
+                    dataType: 'json',
+                    type : 'POST',
+                    data:data,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    crossDomain: true,
+
+                    success: function(res) {
+                        // 如果设置失败了
+                        if(res.code != 0){
+                            alert(res.message)
+                            window.curPage -= 1;    //恢复
+                        }else{
+                            // 如果已经到了最后一页
+                            if(window.curPage == window.pageNum){
+                                $('#last_one').attr('src',window.url+'/'+(window.curPage - 1)+'.jpg');
+                                $('#cur_one').attr('src',window.url+'/'+(window.curPage)+'.jpg');
+                                $('#next_one').attr('src','images/nosignal.jpg');
+                                $('#cur_slider').attr('src','ppt/'+window.cid+'/'+(window.curPage)+'.jpg');
+                            }else{
+                                $('#last_one').attr('src',window.url+'/'+(window.curPage - 1)+'.jpg');
+                                $('#cur_one').attr('src',window.url+'/'+(window.curPage)+'.jpg');
+                                $('#next_one').attr('src',window.url+'/'+(window.curPage + 1)+'.jpg');    
+                                $('#cur_slider').attr('src',window.url+'/'+(window.curPage)+'.jpg');
+                            }
+                            $('#curPageInfo').text(window.curPage+'/'+window.pageNum);
+                        }
+                    }
+                });
+            });
+
+            // function getStuDat(){
+            //     var data = {'cid':window.cid,'curPage':window.curPage};
+            //     $.ajax({
+            //         url: ip+":8092/class/getCurStaDat",
+            //         dataType: 'json',
+            //         type : 'GET',
+            //         data:data,
+            //         xhrFields: {
+            //             withCredentials: true
+            //         },
+            //         crossDomain: true,
+
+            //         success: function(res) {
+            //             // 如果获取数据失败了
+            //             if(res.code != 0){
+            //                 alert(res.message)
+            //                 //window.curPage -= 1;    //恢复
+            //             }else{
+            //                 console.log(JSON.stringify(res.object.happyCount));
+
+            //                 var canv=document.getElementById("curPageEmo");
+            //                 var ctx=canv.getContext("2d");
+            //                 var num=[res.object.happyCount,res.object.sadCount];
+            //                 var col=["#F00","#00f"]
+            //                 var j=0,j1=0,j2=0,jiao=0;
+            //                 var sun=0;
+            //                 for(var i=0;i<num.length;i++){
+            //                     sun=sun+num[i];
+            //                 }
+            //                 for(var i=0;i<num.length;i++){
+            //                     j=2*Math.PI*num[i]/sun;
+            //                     j2=j1+j;
+            //                     ctx.beginPath();
+            //                     ctx.fillStyle=col[i];
+            //                     ctx.arc(canv.width/2,canv.height/2,120,j1,j2,false);
+            //                     ctx.lineTo(canv.width/2,canv.height/2);
+
+            //                     ctx.closePath();
+
+            //                     ctx.fill();
+            //                     jiao=j1+j/2;
+            //                     ctx.font="20px Arial";
+            //                     ctx.fillStyle="#000";
+            //                     j1=j1+j;
+            //                 }
+            //                 //如果已经到了最后一页
+            //                 if(window.curPage == window.pageNum){
+            //                     $('#last_one').attr('src',window.url+'/'+(window.curPage - 1)+'.jpg');
+            //                     $('#cur_one').attr('src',window.url+'/'+(window.curPage)+'.jpg');
+            //                     $('#next_one').attr('src','images/nosignal.jpg');
+            //                     $('#cur_slider').attr('src',window.url+'/'+(window.curPage)+'.jpg');
+            //                 }else{
+            //                     $('#last_one').attr('src',window.url+'/'+(window.curPage - 1)+'.jpg');
+            //                     $('#cur_one').attr('src',window.url+'/'+(window.curPage)+'.jpg');
+            //                     $('#next_one').attr('src',window.url+'/'+(window.curPage + 1)+'.jpg');    
+            //                     $('#cur_slider').attr('src',window.url+'/'+(window.curPage)+'.jpg');
+            //                 }
+            //             }
+            //         }
+            //     });
+            // }
+            // setInterval(getStuDat,5000);
+            $('#open-config').click(function(){
+                if($('#config-list').css('width') == '0px'){
+                    $('#config-list').css('width','300px');
+                    $('#open-config').css('right','298px');
+                }else{
+                    $('#config-list').css('width','0px');
+                    $('#open-config').css('right','0px');
+                }
+            })
+            
+        });
+
+
+
+
+    </script>
+
+</head>
+<style type="text/css">
+    body, html {
+        /*	  width: 100%;
+              height: 100%;
+              overflow: hidden;*/
+        font-family: 'Roboto', sans-serif;
+        color: rgba(0, 0, 0, 0.8);
+    }
+    #webcam, #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index:999;
+        overflow-x:hidden;
+    }
+    #eyes {
+        position: fixed;
+        top: 0;
+        left: 400px;
+        z-index:999;
+    }
+    #face {
+        position: fixed;
+        top: 50px;
+        left:400px;
+        z-index:999;
+    }
+    #picCan {
+        position: fixed;
+    }
+    #gastureCan {
+        position: fixed;
+        top: 500px;
+        left:0px;
+        z-index:999;
+        display: none;
+    }
+    #target {
+        background-color: lightgreen;
+        position: absolute;
+        border-radius: 50%;
+        height: 40px;
+        width: 40px;
+        transition: all 0.1s ease;
+        box-shadow: 0 0 20px 10px white;
+        border: 4px solid rgba(0,0,0,0.5);
+        opacity: 0;
+        z-index:999;
+    }
+    #open-config {
+        position: absolute;
+        top: 22%;
+        right: 0px;
+        height: 75px;
+        border: 0;
+        border-left: 1px solid rgb(23, 32, 43, 0.2);
+        background: #323131;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .box {
+        /*float: right;*/
+        position: fixed;
+        right: 0;
+        height: 1000px;
+        width: 0px;
+        margin-left: 0;
+        display: block;
+        background-color: #323131;
+        -moz-transition: margin-right 2s;
+        transition: margin-right 2s;
+        z-index: 999;
+    }
+
+    aside ul li {
+        height: 40px;
+        line-height: 40px;
+        border-top: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+        list-style-type: none;
+        text-align: center;
+    }
+
+    aside ul li a {
+        width: 100%;
+        height: 100%;
+        text-decoration-line: none;
+        color: #fff;
+        display: block;
+    }
+
+    aside ul li a:hover {
+        background: #d3d;
+    }
+    aside ul li input {
+        display: inline;
+        width: 40px;
+        height: 20px;
+    }
+
+    section {
+        width: 100%;
+        height: 100%;
+        background: #d4d4d4;
+        height: 1000px;
+    }
+
+    section h1 {
+        text-align: center;
+        border-bottom: 1px solid #fff;
+    }
+    #last_one{
+        /*width: 80%;*/
+        height: 30%;
+        border: solid;
+        margin-bottom: 2%;
+    }
+    #next_one{
+        /*width: 80%;*/
+        height: 30%;
+        border: solid;
+        margin-top: 2%;
+    }
+    #cur_one{
+        /*width: 90%;*/
+        height: 35%;
+        border: solid;
+    }
+    #dir_list{
+        width: 500px;
+        height: 853px;
+        position: absolute;
+        top:120px;
+    }
+    #cur_slider{
+        width: 60%;
+        height: 70%;
+        left: 30%;
+        position: absolute;
+        border: solid;
+        border-color: red;
+    }
+    #slider_div{
+        /*width: 80%;*/
+    }
+    #curPageEmo{
+        width: 300px;
+        height: 300px;
+    }
+    #curPageInfo{
+        position: relative;
+        bottom: 0;
+        text-align: center;
+        left: 10%;
+    }
+</style>
+<body>
+
+<!-- 用于测试使用 -->
+<canvas id="picCan" width="400" height="300"></canvas>
+<canvas id="gastureCan" width="400" height="300"></canvas>
+<!-- 侧边栏 -->
+<aside class="box" id="config-list">
+    <button id="open-config">三</button>
+    <ul>
+        <li>
+            <h3 ><font color="white">数据统计</font></h3>
+        </li>
+        <li><font color="white">总体情绪比例： </font></li>
+        <canvas id = "totalPageEmo"></canvas>
+
+         <script type="text/javascript">
+            function pie_total(){
+                 $.get(ip+":8092/class/getTotalDat",{'cid':window.cid},function(data){
+                    //console.log(data);
+                    var data = eval('(' + data + ')'); 
+                    var understand_stu = data.object.happyCount;
+                    var confused_stu = data.object.sadCount;
+
+                    var understand_per = understand_stu/(understand_stu+confused_stu);
+                    var confused_per = confused_stu/(understand_stu+confused_stu);
+
+                    var ctx1 = document.getElementById('totalPageEmo');
+                    var stu_Type = []; 
+                    var onePercentage = [];  //所占百分比
+                    var backColor1 = [] //百分比颜色
+
+                    stu_Type.push("听懂的学生比例");
+                    stu_Type.push("疑惑的学生比例");
+                    onePercentage.push(understand_per);
+                    onePercentage.push(confused_per);
+                    backColor1.push('#FF6384','#36A2EB');
+
+                    var myChart1 = new Chart(ctx1,{
+                        type:'pie',
+                        data:{
+                            labels: stu_Type, //矩形标题
+                            datasets:[{
+                                data: onePercentage, //所占整圆的比例
+                                backgroundColor:backColor1, //背景色
+                                hoverBackgroundColor:backColor1
+                            }]
+                        }
+                    });
+
+                });
+            }
+            
+               
+            var t1 = window.setInterval(pie_total,5000);
+        </script>
+        
+        <li><font color="white">当前页情绪比例： </font> </li>
+        <canvas id = "curPageEmo"></canvas>
+
+        <script type="text/javascript">
+            function pie_current(){
+                $.get(ip+":8092/class/getCurStaDat",{'cid':window.cid,'curPage':window.curPage},function(data){
+                    console.log(data)
+                    var data = eval('(' + data + ')'); 
+                    var understand_stu = data.object.happyCount;
+                    var confused_stu = data.object.sadCount;
+
+                    var understand_per = understand_stu/(understand_stu+confused_stu);
+                    var confused_per = confused_stu/(understand_stu+confused_stu);
+
+                    var ctx1 = document.getElementById('curPageEmo');
+                    var stu_Type = []; 
+                    var onePercentage = [];  //所占百分比
+                    var backColor1 = [] //百分比颜色
+
+                    stu_Type.push("听懂的学生比例");
+                    stu_Type.push("疑惑的学生比例");
+                    onePercentage.push(understand_per);
+                    onePercentage.push(confused_per);
+                    backColor1.push('#FF6384','#36A2EB');
+
+                    var myChart2 = new Chart(ctx1,{
+                        type:'pie',
+                        data:{
+                            labels: stu_Type, //矩形标题
+                            datasets:[{
+                                data: onePercentage, //所占整圆的比例
+                                backgroundColor:backColor1, //背景色
+                                hoverBackgroundColor:backColor1
+                            }]
+                        }
+                    });
+
+                });
+            }
+                
+                var t2 = window.setInterval(pie_current,5000);
+        </script>
+
+    </ul>
+</aside>
+<!-- header-section-starts -->
+<div class="header" id="header">
+    <div class="container">
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt="" /></a>
+        </div>
+        <div class="social-icons header-social-icons">
+
+
+        </div>
+        <!-- <div id = "user_div">
+            <a href="login.html" class = "user_text">登录</a>
+            <a href="register.html" id = "register_text" class = "user_text">注册</a>
+            <!-- <p  class = "user_text">欢迎您，</p><a href="" class = "user_text">zek</a> -->
+        </div> -->
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="header-bottom">
+<!--     <div class="container">
+        <h3>让<span>课堂</span>变得更加轻松与智能。</h3>
+    </div> -->
+</div>
+<div id="dir_list">
+    <img id="last_one">
+    <img id="cur_one">
+    <img id="next_one">
+</div>
+<div id="slider_div">
+    <h3 id="curPageInfo">0/0页</h3>
+    <img id="cur_slider">
+</div>
+<!-- <div class = "old_class">
+    <p>已有课程</p>
+           
+    <p>输入课程号码</p>
+    <input type="text" id="class_num" placeholder='请输入课程号码'  />
+    <p><button onclick="check()" value="start_old_class" id="start_old_class">开始上课</button></p>
+
+           
+
+
+    <style type="text/css">
+        .old_class{margin:20px 150px;float: left}
+        input[id='class_num']{margin:10px 0px;padding:3px 6px;padding-left:10px;border:1px solid #E7EAEC;width:230px;height:25px;line-height:25px;border-left:3px solid #3FB7EB;background:#FAFAFB;border-radius:2px;}
+        button[id="start_old_class"]{margin:0px 0px ;color:#00A2D4;padding: 4px 6px ;border:1px dashed #00A2D4;border-radius:2px;}
+
+    </style>
+</div>
+ -->
+
+<!-- <div class="content" id="content"  >
+    <img src=""  alt="" />
+    <p><button onclick="check()" value="last_page" id="last_page">上一页</button></p>
+    <p><button onclick="check()" value="next_page" id="next_page">下一页</button></p>
+    <p><button onclick="check()" value="end_class" id="end_class">结束课程</button></p>
+
+    <style type="text/css">
+        div[id="content"]{display: none;}
+
+    </style>
+
+</div> -->
+
+
+
+
+
+
+</body>
+</html>
+

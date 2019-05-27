@@ -13,9 +13,25 @@
 	<link rel="stylesheet" href="css/animate.css">
 	<link rel="stylesheet" href="css/login.css">
 
+    <!-- jQuery -->
+    <script src="js/jquery.min.js"></script>
+
+    <script type="text/javascript" src="js/cookiesutil.js"></script>
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Placeholder -->
+    <script src="js/jquery.placeholder.min.js"></script>
+    <!-- Waypoints -->
+    <script src="js/jquery.waypoints.min.js"></script>
+    <!-- Main JS -->
+    <script src="js/main.js"></script>
+    <!-- cookies -->
+    <script type="text/javascript" src="js/cookiesutil.js"></script>
 
 	<!-- Modernizr JS -->
 	<script src="js/modernizr-2.6.2.min.js"></script>
+
+    <script type="text/javascript" src="js/config.js"></script>
 	<!-- FOR IE9 below -->
 	<!--[if lt IE 9]>
 	<script src="js/respond.min.js"></script>
@@ -63,18 +79,6 @@
 		</div>
 	</div>
 
-	<!-- jQuery -->
-	<script src="js/jquery.min.js"></script>
-	<!-- Bootstrap -->
-	<script src="js/bootstrap.min.js"></script>
-	<!-- Placeholder -->
-	<script src="js/jquery.placeholder.min.js"></script>
-	<!-- Waypoints -->
-	<script src="js/jquery.waypoints.min.js"></script>
-	<!-- Main JS -->
-	<script src="js/main.js"></script>
-    <!-- cookies -->
-    <script type="text/javascript" src="js/cookiesutil.js"></script>
 </body>
 <script>
 
@@ -97,16 +101,16 @@
         var password = $("#password").val();
 		// window.location.href="signUp";
         if(check()) {
-        	var radios = document.getElementsByName("user_type");
-            var user_type = 0;
-            for(var i=0;i<radios.length;i++){
-                if(radios[i].checked == true){
-                    user_type = radios[i].value;
-                }
-            }
-            data = {'username' : userName, 'password': password,'user_type':user_type};
+        	// var radios = document.getElementsByName("user_type");
+         //    var user_type = 0;
+         //    for(var i=0;i<radios.length;i++){
+         //        if(radios[i].checked == true){
+         //            user_type = radios[i].value;
+         //        }
+         //    }
+            var data = {'username' : userName, 'password': password,'type':$('input[name="user_type"]:checked').val()};
             //alert(JSON.stringify(data))
-            $.post('http://localhost:8082/user/login',data,function(str){
+            $.post(ip+':8092/user/login',data,function(str){
                 //alert(str)
                 var res = eval('('+str+')');
                 if(res.code != 0){
@@ -125,11 +129,11 @@
                     // });
                     
                     document.cookie = 'JSESSIONID=' + res.object;
-                    if(user_type=="student"){
-                        window.location.href = "";
+                    if($('input[name="user_type"]:checked').val()=="student"){
+                        window.location.href = "index_student.html";
                     }
                     else {
-                        window.location.href = "";
+                        window.location.href = "index_teacher.html";
                     }
 
                 }
