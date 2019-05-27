@@ -38,7 +38,7 @@ public class AnalysisServiceImplTest extends TmallApplicationTests {
     }
     @Test
     public void clazzAnalysisTest(){
-        Envelope e=analysisService.getClazzAnalysis(1);
+        Envelope e=analysisService.getClazzAnalysis(58);
         System.out.println(e.getObj().toString());
         e=analysisService.getClazzAnalysis(24);
         System.out.println(e.getObj());

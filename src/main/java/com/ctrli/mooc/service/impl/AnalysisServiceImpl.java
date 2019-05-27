@@ -62,10 +62,10 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Override
     public Envelope getClazzAnalysis(int cid) {
         List<AnalysisEntity> studentPerClazzList;
-        int pageNum,totalStudentNum,happyCount=0,sadCount=0;
+        int totalStudentNum,happyCount=0,sadCount=0;
         try {
             studentPerClazzList=analysisDao.getStudentPerClazz(cid);
-            pageNum=clazzDao.get(cid).getPageNum();
+
         } catch (Exception e) {
             e.printStackTrace();
             return Envelope.dbError;
@@ -80,8 +80,8 @@ public class AnalysisServiceImpl implements AnalysisService {
         }
         sadCount=totalStudentNum-happyCount;
         JSONObject result=new JSONObject();
-        result.put("happyCount",((double)happyCount)/pageNum);
-        result.put("sadCount",((double)sadCount)/pageNum);
+        result.put("happyCount",happyCount);
+        result.put("sadCount",sadCount);
 
         return new Envelope(0,"success",result);
     }
