@@ -43,8 +43,14 @@ public class AnalysisServiceImpl implements AnalysisService {
             e.printStackTrace();
             return Envelope.dbError;
         }
-        if (studentPerPageList.size()<=0||studentPerPageList==null)
-            return new Envelope(1,"没有找到该页",null);
+        if (studentPerPageList.size()<=0||studentPerPageList==null){
+            JSONObject result=new JSONObject();
+            result.put("happyCount",0);
+            result.put("sadCount",0);
+
+            return new Envelope(0,"success",result);
+        }
+            //return new Envelope(1,"没有找到该页",null);
         total=studentPerPageList.size();
         for (AnalysisEntity analysisEntity:studentPerPageList){
             JSONObject data=JSONObject.fromObject(analysisEntity.getData());

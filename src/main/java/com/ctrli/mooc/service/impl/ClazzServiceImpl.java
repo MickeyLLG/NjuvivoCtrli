@@ -250,10 +250,11 @@ public class ClazzServiceImpl implements ClazzService {
         if(clazzEntity == null){
             return new Envelope(1,"没有找到该课程",null);
         }
+
         // 返回pageNum,dirname
         JSONObject result=new JSONObject();
         result.put("pageNum",clazzEntity.getPageNum());
-        result.put("dirname",clazzEntity.getDirname());
+        result.put("dirname",clazzEntity.getDirname().split("njuvivo/")[1]);
         return new Envelope(0,"success",result);
     }
 

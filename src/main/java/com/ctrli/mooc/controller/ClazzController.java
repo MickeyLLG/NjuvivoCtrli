@@ -214,13 +214,13 @@ public class ClazzController {
     @ResponseBody
     public String getCurStaDat(int cid,int curPage,HttpSession session){
         // 获取保存的用户对象
-        Object user = session.getAttribute("user");
+//        Object user = session.getAttribute("user");
         // 如果为空或者不是教师实体
-        if(user == null || !(user instanceof TeacherEntity)){
-            return new Envelope(1,"只有教师可以获取上课状态数据",null).toString();
-        }
+//        if(user == null || !(user instanceof TeacherEntity)){
+//            return new Envelope(1,"只有教师可以获取上课状态数据",null).toString();
+//        }
         // 转换用户为教师实体
-        TeacherEntity teacherEntity = (TeacherEntity) user;
+//        TeacherEntity teacherEntity = (TeacherEntity) user;
         try{
             return analysisService.getPageAnalysis(cid,curPage).toString();
         }catch (Exception e){
@@ -230,13 +230,38 @@ public class ClazzController {
     }
 
     /**
-     * 根据课程id获取总页数
+     * 获取当前上课统计数据
+     * @param cid 课程id
+     * @param session
+     * @return
+     */
+    @RequestMapping("/getTotalDat")
+    @ResponseBody
+    public String getTotalDat(int cid,HttpSession session){
+        // 获取保存的用户对象
+//        Object user = session.getAttribute("user");
+        // 如果为空或者不是教师实体
+//        if(user == null || !(user instanceof TeacherEntity)){
+//            return new Envelope(1,"只有教师可以获取上课状态数据",null).toString();
+//        }
+        // 转换用户为教师实体
+//        TeacherEntity teacherEntity = (TeacherEntity) user;
+        try{
+            return analysisService.getClazzAnalysis(cid).toString();
+        }catch (Exception e){
+            e.printStackTrace();
+            return Envelope.systemError.toString();
+        }
+    }
+
+    /**
+     * 根据课程id获取相关信息
      * @param cid 课程id
      * @return 总页数
      */
-    @RequestMapping("/getPageNum")
+    @RequestMapping("/getPageInfo")
     @ResponseBody
-    public String getPageNumByCid(int cid){
+    public String getPageInfo(int cid){
         try{
             return clazzService.getPageInfo(cid).toString();
         }catch (Exception e){
